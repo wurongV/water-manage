@@ -21,7 +21,7 @@
           <el-button 
             type="primary" 
             size="small" 
-            @click="userDialog = true">
+            @click="showAddDialog">
             添加用户
           </el-button>
         </el-col>
@@ -110,8 +110,8 @@
       </el-form>
       <div slot="footer">
         <el-button @click="userDialog = false" size="small">取消</el-button>
-        <el-button v-if="userTitle=='添加'" type="primary" @click="addUser" size="small">添加</el-button>
-        <el-button v-else type="primary" @click="editUser" size="small">编辑</el-button>
+        <el-button v-if="userTitle=='添加'" type="primary" @click="addUserBtn" size="small">确定</el-button>
+        <el-button v-else type="primary" @click="editUser" size="small">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -195,15 +195,18 @@ export default {
       ]
       this.total = 1
     },
+    showAddDialog() {
+      this.userDialog = true
+      this.userTitle = '添加'
+    },
     userDialogClosed() {
       this.$refs.userFormRef.resetFields()
     },
-    addUser() {
+    addUserBtn() {
       this.$refs.userFormRef.validate( valid => {
         if (valid) {
           console.log('确认添加用户');
           console.log(this.userForm.username);
-          
           this.userDialog = false
         }
       }) 
@@ -215,8 +218,6 @@ export default {
       this.userForm.username = row.username
       this.userForm.mobile = row.mobile
       this.userForm.sex = row.sex
-      
-      
     },
     editUser() {
       this.$refs.userFormRef.validate( valid => {
@@ -229,8 +230,20 @@ export default {
       }) 
     },
     removeUser(id) {
-      console.log('删除用户');
-      
+      const confirmResult = this.$confirm(
+        '此操作将永久删除该用户，是否继续？',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'          
+        }
+      ).catch(err => err)
+      if (confirmResult == 'confirm') {
+
+        console.log('删除用户')
+
+      }
     }
   }
 }
