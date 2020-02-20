@@ -77,11 +77,11 @@ export default {
         {id: '0', authName: "用户管理", path: "user", 
           child:[{id: '10', authName: "用户列表", path: "user"}]
         }, 
-        {id: '1', authName: "区域管理", path: "area",
-          child:[{id: '11', authName: "区域列表", path: "area"}]
-        },
         {id: '2', authName: "水表管理", path: "water",
           child:[{id: '12', authName: "水表列表", path: "water"}]
+        },        
+        {id: '1', authName: "区域管理", path: "area",
+          child:[{id: '11', authName: "区域列表", path: "area"}]
         },
       ],
       activePath: '',
@@ -217,9 +217,7 @@ export default {
       }
     }
     
-    .el-main {
-      padding: 0;
-    }
+
   }
 
 

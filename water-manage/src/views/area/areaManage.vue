@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>区域管理</el-breadcrumb-item>
+      <el-breadcrumb-item>区域列表</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <!-- 新建区域 -->
       <el-row :gutter="20">
@@ -54,7 +59,7 @@
               <el-button
                 type="primary"
                  style="margin-left: 10px"
-                @click="showEditDialog(scope.row)"
+                @click="showEditSnDialog(scope.row)"
                 size="mini">
                 编辑
               </el-button>
@@ -64,7 +69,7 @@
             align="center"
             label="管理员"
             prop="manage"
-            min-width="160px">
+            min-width="180px">
             <template slot-scope="scope">
               <span>{{ scope.row.manage }}</span>
               <el-button
@@ -90,12 +95,13 @@
               </el-button>
               <el-button 
                 type="success"
+                @click="showAddNodeDialog(scope.row)"
                 size="mini">
                 添加节点
               </el-button>
               <el-button
                 type="danger"
-                @click="removeUser(scope.row.id)"
+                @click="removeArea(scope.row.id)"
                 size="mini">
                 删除
               </el-button>
@@ -119,7 +125,7 @@
 
     <!-- 添加/编辑 区域 -->
     <el-dialog
-      title="新建区域"
+      :title="`${areaTitle}区域`"
       :visible.sync="areaDialog"
       width="38%"
       @close="areaDialogClosed">
@@ -144,35 +150,90 @@
       </el-form>
       <div slot="footer">
         <el-button @click="areaDialog = false" size="small">取消</el-button>
-        <el-button type="primary" @click="addAreaBtn" size="small">确定</el-button>
+        <el-button v-if="areaTitle == '新建'" type="primary" @click="addAreaBtn" size="small">确定</el-button>
+        <el-button v-else type="primary" @click="editAreaBtn" size="small">确定</el-button>
       </div>
     </el-dialog>
 
-    <!-- 选择管理员 -->
+    <!-- 选择管理员弹窗 -->
     <el-dialog
       title="选择管理员"
       :visible.sync="manageDialog"
-      width="38%"
+      width="660px"
       @close="manageDialogClosed">
-      <!-- 选择管理员 -->
+      <!-- 选择管理员穿梭框 -->
       <el-transfer
         filterable
-        :titles="['', '']"
+        :titles="['管理员', '已选管理员']"
         :filter-method="filterMethod"
         filter-placeholder="请输入管理员"
         v-model="selectManageVal"
+        @change="newManage"
         :data="manageData">
       </el-transfer>
       <div slot="footer">
         <el-button @click="manageDialog = false" size="small">取消</el-button>
-        <el-button type="primary" @click="changeManageBtn" size="small">确定</el-button>
+        <el-button type="primary" @click="seleManageBtn" size="small">确定</el-button>
       </div>
     </el-dialog>
 
+    <!-- 编辑水表SN列表 -->
+    <el-dialog
+      title="水表SN"
+      :data="tableData.filter(data => !searchSn || data.name.toLowerCase().includes(searchSn.toLowerCase()))"
+      :visible.sync="editSnDialog"
+      width="600px"
+      @close="editSnDialogClose">
+        <el-table :data="tableData" border stripe>
+          <el-table-column 
+            type="index" 
+            align="center" 
+            size="mini" 
+            width="50">
+          </el-table-column>
+          <el-table-column
+            align="center"
+            size="mini"
+            prop="sn"
+            min-width="160px"
+            label="水表SN">
+          </el-table-column>
+          <el-table-column
+            align="right">
+            <template slot="header" slot-scope="scope">
+              <el-input
+                v-model="searchSn"
+                size="mini"
+                placeholder="输入关键字搜索"/>
+            </template>
+           </el-table-column>          
+        </el-table>
+      <div slot="footer">
+        <el-button @click="editSnDialog = false" size="small">取消</el-button>
+        <el-button type="primary" @click="editSnBtn" size="small">确定</el-button>
+      </div>        
+    </el-dialog>
 
-
-
-
+    <!-- 添加节点 -->
+    <el-dialog
+      title="添加节点"
+      :visible.sync="addNodeDialog"
+      width="500px"
+      @close="addNodeDialogClose">
+      <el-form
+       :model="nodeForm"
+       :rules="nodeFormRules"
+       ref="nodeFormRef"
+       label-width="70px">
+        <el-form-item label="节点" prop="node">
+          <el-input size="small" v-model="nodeForm.node"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="addNodeDialog = false" size="small">取消</el-button>
+        <el-button  type="primary" @click="addNodeBtn" size="small">确定</el-button>  
+      </div>   
+    </el-dialog>
   </div>
 </template>
 
@@ -180,25 +241,54 @@
 import table from '@/mixins/tables'
 export default {
   data () {
+    // 管理员数据
     const generateData = _ => {
       const manageData = [];
-      const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
-      const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
-      cities.forEach((city, index) => {
+      const manageArr = ['赵高', '小明', '韩梅梅', '林冲', '赵云', '张飞', '吕布'];
+      const pinyin = ['zhaogao', 'xiaoming', 'hanmeimei', 'linchong', 'zhaoyun', 'zhangfei', 'lvbu'];
+      manageArr.forEach((manage, index) => {
         manageData.push({
-          label: city,
+          label: manage,
           key: index,
           pinyin: pinyin[index]
         });
       });
-      return manageData;
+      return manageData;  
     };
     return {
-      areaDialog: false,
+      tableData: [],
+      areaCloumn: [
+        { name: 'name', label: '名称', minWidth: '160px' },
+        { name: 'lastNode', label: '上一节点', minWidth: '160px' },
+        { name: 'founder', label: '创建人', minWidth: '160px' },
+        { name: 'modifiTime', label: '修改时间', minWidth: '160px' }     
+      ], 
+      editSnDialog: false, 
       manageDialog: false,
+      areaTitle: '新建',
+      areaDialog: false,
+      addNodeDialog: false,
       areaForm: {
         name: '',
         lastNode: ''
+      },
+      nodeForm: {
+        node: ''
+      }, 
+      nodeFormRules: {
+        node: [
+          {
+            required: true,
+            message: '请输入节点',
+            trigger: 'blur'
+          },
+          {
+            min: 2,
+            max: 10,
+            message: '节点长度在 2 到 10 个字符之间',
+            trigger: 'blur'
+          }
+        ]
       },
       areaFormRules: {
         name: [
@@ -228,20 +318,15 @@ export default {
           value: '选项3',
           label: '节点3'
         }],
-      tableData: [ ],
-      areaCloumn: [
-        { name: 'name', label: '名称', minWidth: '160px' },
-        { name: 'lastNode', label: '上一节点', minWidth: '160px' },
-        { name: 'founder', label: '创建人', minWidth: '160px' },
-        { name: 'modifiTime', label: '修改时间', minWidth: '160px' },
-        // { name: 'sn', label: '水表SN', minWidth: '160px' },
-        // { name: 'manage', label: '管理员', minWidth: '160px' },        
-      ],  
+      
+ 
       // el-transfer
       manageData: generateData(),
-      selectManageVal: [],     
+      selectManageVal: [],
+      searchSn: '',  
     }
   },
+  // 复用table.js
   mixins: [table],
   created () {
     this.getList()
@@ -256,7 +341,10 @@ export default {
       ]
       this.total = 1
     },
+
+    // 新建区域
     showAddDialog() {
+      this.areaTitle = '新建'
       this.areaDialog = true
     },
     areaDialogClosed() {
@@ -270,20 +358,33 @@ export default {
         }
       }) 
     },
+
+    // 表格编辑 添加节点 删除
     showEditDialog(row) {
+      this.areaTitle = '编辑'
       console.log('显示编辑区域');
       this.areaDialog = true
     },
-    editUser() {
-      this.$refs.areaFormRef.validate( valid => {
-        if (valid) {
-          console.log('确认编辑用户')
-          
-          this.areaDialog = false
-        }
-      }) 
+    editAreaBtn() {
+
     },
-    removeUser(id) {
+    showAddNodeDialog(row) {
+      this.addNodeDialog = true
+      // this.$refs.areaFormRef.validate( valid => {
+      //   if (valid) {
+      //     console.log('确认编辑用户')
+          
+      //     this.areaDialog = false
+      //   }
+      // }) 
+    },
+    addNodeDialogClose() {
+      this.$refs.nodeFormRef.resetFields()
+    },
+    addNodeBtn() {
+      this.addNodeDialog = false
+    },
+    removeArea(id) {
       const confirmResult = this.$confirm(
         '此操作将永久删除该区域，是否继续？',
         '提示',
@@ -299,6 +400,8 @@ export default {
 
       }
     },
+
+    // 选择管理员
     filterMethod(query, item) {
       return item.label.indexOf(query) > -1;
     },
@@ -306,11 +409,29 @@ export default {
       this.manageDialog = true
     },
     manageDialogClosed() {
-
+      // 关闭选择管理员时回调
     },
-    changeManageBtn() {
+    seleManageBtn() {
       this.manageDialog = false
+    },
+    // 右侧列表元素变化时触发
+    newManage(e) {
+      console.log(e)
+    },
+
+    // 编辑水表SN
+    showEditSnDialog(row) {
+      this.editSnDialog = true,
+      console.log(row)
+    },
+    editSnBtn() {
+      this.editSnDialog = false
+    },
+    editSnDialogClose() {
+      // 关闭水表sn时回调
     }
+
+
   }
 }
 </script>

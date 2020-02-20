@@ -16,7 +16,7 @@
         </el-col>
         <el-col :span="6">
           <div class="logout">
-            <span @click="logout">退出</span>
+            <span @click="logout">返回</span>
           </div>
         </el-col>
       </el-row>
@@ -424,7 +424,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$router.push('/login')
+      this.$router.push('/home')
     },
   }
 };

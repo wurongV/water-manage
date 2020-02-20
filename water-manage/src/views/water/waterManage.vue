@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>水表管理</el-breadcrumb-item>
+      <el-breadcrumb-item>水表列表</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <!-- 添加用户 -->
       <el-row :gutter="20">
