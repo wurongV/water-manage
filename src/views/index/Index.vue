@@ -16,7 +16,7 @@
         </el-col>
         <el-col :span="6">
           <div class="logout">
-            <span>退出</span>
+            <span @click="logout">返回</span>
           </div>
         </el-col>
       </el-row>
@@ -320,6 +320,7 @@ export default {
     }
   },
   mounted() {
+    
     // 饼状图
     const pieChartHeight = this.$refs.analyChartRef.offsetHeight;
 
@@ -421,7 +422,11 @@ export default {
 
 
   },
-  methods: {}
+  methods: {
+    logout() {
+      this.$router.push('/home')
+    },
+  }
 };
 </script>
 
