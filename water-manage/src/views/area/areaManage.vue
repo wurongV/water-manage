@@ -138,14 +138,6 @@
           <el-input size="small" v-model="areaForm.name"></el-input>
         </el-form-item>
         <el-form-item label="节点" prop="lastNode">
-          <!-- <el-select v-model="areaForm.lastNode" placeholder="请选择上一节点">
-            <el-option
-              v-for="item in sexOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select> -->
           <el-input
             placeholder="输入关键字进行过滤"
             v-model="areaForm.filterNodeText">
