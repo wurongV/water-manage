@@ -138,14 +138,22 @@
           <el-input size="small" v-model="areaForm.name"></el-input>
         </el-form-item>
         <el-form-item label="节点" prop="lastNode">
-          <el-select v-model="areaForm.lastNode" placeholder="请选择上一节点">
-            <el-option
-              v-for="item in sexOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <el-input
+            placeholder="输入关键字进行过滤"
+            v-model="areaForm.filterNodeText">
+          </el-input>
+
+          <el-tree
+            style="width:50%"
+            :data="lastNodeData"
+            default-expand-all
+            @node-click="clickNode"
+            :filter-node-method="filterNode"
+            ref="tree">
+          </el-tree>
+
+
+
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -184,29 +192,44 @@
       :visible.sync="editSnDialog"
       width="600px"
       @close="editSnDialogClose">
-        <el-table :data="tableData" border stripe>
+      <el-col :span="10">
+        <el-input
+          v-model="searchSn"
+          size="small"
+          width="50px"
+          style="padding-bottom: 10px"
+          placeholder="输入关键字搜索"/> 
+      </el-col>
+        <el-table 
+          :data="tableData" 
+          border stripe
+          :row-style="rowClass"
+          highlight-current-row
+          @current-change="currentChange"
+          :row-class-name="tableRowClassName">
+
           <el-table-column 
-            type="index" 
+            label="单选"
             align="center" 
-            size="mini" 
             width="50">
+              <template scope="scope">
+                  <el-radio
+                  :label="scope.row.id"
+                  v-model="snRadio"
+                  @change.native="getRadioSn(scope.row)">
+                  <i></i>
+                  </el-radio>
+              </template>
           </el-table-column>
+
+
           <el-table-column
             align="center"
             size="mini"
             prop="sn"
             min-width="160px"
             label="水表SN">
-          </el-table-column>
-          <el-table-column
-            align="right">
-            <template slot="header" slot-scope="scope">
-              <el-input
-                v-model="searchSn"
-                size="mini"
-                placeholder="输入关键字搜索"/>
-            </template>
-           </el-table-column>          
+          </el-table-column>       
         </el-table>
       <div slot="footer">
         <el-button @click="editSnDialog = false" size="small">取消</el-button>
@@ -270,7 +293,9 @@ export default {
       addNodeDialog: false,
       areaForm: {
         name: '',
-        lastNode: ''
+        lastNode: '',
+        filterNodeText: ''
+
       },
       nodeForm: {
         node: ''
@@ -308,23 +333,45 @@ export default {
           { required: true, message: '请选择上一节点', trigger: 'blur' },
         ]
       },  
-      sexOptions: [{
-          value: '选项1',
-          label: '节点1'
+      lastNodeData: [{
+          id: 1,
+          label: '一级 1',
+          children: [{
+            id: 4,
+            label: '二级 1-1',
+            children: [{
+              id: 9,
+              label: '三级 1-1-1'
+            }, {
+              id: 10,
+              label: '三级 1-1-2'
+            }]
+          }]
         }, {
-          value: '选项2',
-          label: '节点2'
-        }, {
-          value: '选项3',
-          label: '节点3'
+          id: 2,
+          label: '一级 2',
+          children: [{
+            id: 5,
+            label: '二级 2-1'
+          }, {
+            id: 6,
+            label: '二级 2-2'
+          }]
         }],
       
  
       // el-transfer
       manageData: generateData(),
       selectManageVal: [],
-      searchSn: '',  
+      searchSn: '',
+      snRadio: '',
+      selectedIndex: ''
     }
+  },
+  watch: {
+    'areaForm.filterNodeText'(val) {
+      this.$refs.tree.filter(val);
+    }    
   },
   // 复用table.js
   mixins: [table],
@@ -335,9 +382,9 @@ export default {
     getList() {
       console.log('获取数据了列表');
       this.tableData = [
-        {id: 0, name: '福州', lastNode: 'xxx', founder: ' 赵高',modifiTime: '2019-15-16', sn: '123456789',manage:'工人文化宫'},    
-        {id: 1, name: '北京', lastNode: 'xxx', founder: ' 赵高',modifiTime: '2019-15-16', sn: '123456789',manage:'工人文化宫'},         
-        {id: 2, name: '上海', lastNode: 'xxx', founder: ' 赵高',modifiTime: '2019-15-16', sn: '123456789',manage:'工人文化宫'},         
+        {id: 0, name: '福州', lastNode: 'xxx', founder: ' 赵高',modifiTime: '2019-15-16', sn: '12555789',manage:'工人文化宫'},    
+        {id: 1, name: '北京', lastNode: 'xxx', founder: ' 赵高',modifiTime: '2019-15-16', sn: '77723456789',manage:'工人文化宫'},         
+        {id: 2, name: '上海', lastNode: 'xxx', founder: ' 赵高',modifiTime: '2019-15-16', sn: '888856789',manage:'工人文化宫'},         
       ]
       this.total = 1
     },
@@ -354,10 +401,21 @@ export default {
       this.$refs.areaFormRef.validate( valid => {
         if (valid) {
           console.log('确认新建区域');
+          this.areaForm.filterNodeText = ''
           this.areaDialog = false
         }
       }) 
     },
+
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    clickNode(data, node, e) {
+      // 获得点击节点数据
+      this.areaForm.filterNodeText = data.label
+    },
+
 
     // 表格编辑 添加节点 删除
     showEditDialog(row) {
@@ -400,6 +458,26 @@ export default {
 
       }
     },
+    // 单选sn
+    getRadioSn(id) {
+      // console.log(id)
+    },
+    currentChange(val) { 
+      //当前行改变 
+      console.log(val)
+    },   
+    rowClass({row, rowIndex}){   
+      if((this.selectedIndex) === rowIndex){
+          // return { "background-color": "rgba(185, 221, 249, 0.75)" }
+          return { "border": "solid 1px #3dffef","background-color": "rgba(185, 221, 249, 0.75)" }
+      }        
+    },
+
+
+    tableRowClassName({ row, rowIndex }) {
+      row.index = rowIndex;
+    },
+
 
     // 选择管理员
     filterMethod(query, item) {
