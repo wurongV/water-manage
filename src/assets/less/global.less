@@ -5,9 +5,6 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  // background-color:#0b0f34;
-  // background-color: #133049;
-  // background:#0a1631 url("../../assets/image/index/bg.png") 100% 100% no-repeat;
   font-family:"microsoft yahei", arial, sans-serif;
   position: relative;
   color:#dedede;
@@ -43,28 +40,27 @@ outline: none;
 
 
 /* 各模块样式 */
-.col {
-  // margin: 6px 10px;
-  height: 100%;
-}
 
-// home 左
+// index 左
 .col_l {
   -webkit-flex: 2;
   -ms-flex: 2;
-  flex: 2
+  flex: 2;
+  height: 100%;
 }
-// home 中
+// 中
 .col_c {
   -webkit-flex: 3;
   -ms-flex: 3;
   flex: 3;
+  height: 100%;
 }
-// home右
+// 右
 .col_r {
   -webkit-flex: 2;
   -ms-flex: 2;
   flex: 2;
+  height: 100%;
 }
 
 // 模块高度占比
@@ -73,12 +69,8 @@ outline: none;
   box-sizing: border-box;
   height: 100%;
 }
-.panel_wrapper_22 {
-  height: 22%;
-}
-.panel_wrapper_25 {
-  height: 25%;
-}
+
+
 .panel_wrapper_26 {
   height: 26%;
 }
@@ -96,18 +88,6 @@ outline: none;
 }
 .panel_wrapper_56 {
   height: 56%;
-}
-.panel_wrapper_60 {
-  height: 60%;
-}
-.panel_wrapper_70 {
-  height: 70%;
-}
-.panel_wrapper_75 {
-  height: 75%;
-}
-.panel_wrapper_100 {
-  height: 100%;
 }
 
 .pad_6 {
@@ -176,6 +156,35 @@ outline: none;
 .el-transfer-panel__header 
 .el-checkbox__label > span { 
   display: none;
+}
+
+// 滚动条美化
+.beauty-Scroll{
+  .el-scrollbar{
+    // height: calc(100% - 17px); /*此处一定要设置高度，不然内层的计算属性不生效*/
+    height: 100%;
+  }
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+    width: calc(100% + 17px); /*将垂直滚动条挤到可视区域之外*/
+    // height: calc(100% + 17px); /*将水平滚动条挤到可视区域之外*/
+    height: 100%;
+  }
+  // 去除横滚动条
+  .is-horizontal {
+    display: none;
+  }
+}
+
+//滚动条的宽度
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+//滚动条的滑块
+::-webkit-scrollbar-thumb {
+  background-color: #a1a3a9;
+  border-radius: 3px;
 }
 
 

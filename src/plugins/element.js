@@ -38,7 +38,12 @@ import {
   CheckboxGroup,
   Checkbox,
   Upload,
-  Transfer
+  Transfer,
+  Dropdown,
+  DropdownMenu, 
+  DropdownItem,
+  Scrollbar,
+  datePicker
 } from 'element-ui'
 
 Vue.use(Button)
@@ -77,6 +82,11 @@ Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Upload)
 Vue.use(Transfer)
+Vue.use(Dropdown)
+Vue.use(DropdownItem)
+Vue.use(DropdownMenu)
+Vue.use(Scrollbar)
+Vue.use(datePicker)
 // 弹框提示组件全局挂载
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
