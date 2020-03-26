@@ -18,7 +18,9 @@
         </div>
       </div>   
       <div class="water_balance_wrap">
-        <div class="baseMap" v-if="!switchVal">图形</div>
+        <div class="baseMap" v-if="!switchVal">
+          <mingMap />
+        </div>
         <div class="baseList" v-else ref="baseListRef"> 
           <el-date-picker
             v-model="dateValue"
@@ -59,7 +61,11 @@
 </template>
 
 <script>
+import mingMap from './mingMap.vue'
 export default {
+  components: {
+    mingMap
+  },
   data () {
     return {
       switchVal: true,

@@ -29,6 +29,7 @@
     <el-container>
       <el-aside width="218px">
         <el-menu
+          background-color="#f1f1f1"
           default-active="activePath"
           text-color="#697b86"
           active-text-color="#409EFF"
@@ -211,9 +212,14 @@ export default {
     
     .el-aside {
       color: #333;
+      background-color: #f1f1f1;
       border-right: 2px #dde5e9 solid;
       .el-menu {
         border-right: 0;
+        // background-color: #f1f1f1;
+        // /deep/.el-menu--inline {
+          
+        // }
       }
     }
     
