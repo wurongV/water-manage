@@ -11,15 +11,15 @@
         <el-scrollbar>
           <el-table
             ref="table"
-            :data="tableData"
+            :data="tableData" 
+            :height="talbeHeight"
             :header-cell-style="headerStyle"
-            :cell-style="cellStyle"
-            style="width: 98%;"
-            :max-height="tableHeight">
+            :cell-style="cellStyle">
             <el-table-column
+              v-for="(item, index) in tableColumn"
               :prop="item.prop"
               :label="item.label"
-              v-for="(item, index) in tableColumn"
+              :min-width="item.minWidth"
               :key="index">
             </el-table-column>
           </el-table>
@@ -33,7 +33,7 @@
 export default {
   data () {
     return {
-      tableHeight: 50,
+      talbeHeight: 300,
       tableData: [
         {
           floor: "一层",
@@ -110,23 +110,23 @@ export default {
       tableColumn: [
         {
           prop: "floor",
-          label: "层数"
+          label: "层数",
+          minWidth: '60'
         },
         {
           prop: "monthApply",
-          label: "月用水量"
+          label: "月用水量",
+          minWidth: '90'
         },
         {
           prop: "num",
-          label: "每层人数"
+          label: "每层人数",
+          minWidth: '90'
         },
         {
           prop: "per",
-          label: "人均用水量"
-        },
-        {
-          prop: "result",
-          label: "考核结果"
+          label: "人均用水量",
+          minWidth: '90'
         }
       ],      
     }
@@ -143,13 +143,8 @@ export default {
     },
     tableAuto() {
       this.$nextTick(function () {
-        let tableWrapRefHeight = this.$refs.tableWrapRef.offsetHeight
-          this.tableHeight = tableWrapRefHeight - this.$refs.table.$el.offsetTop - 38;
-          // 监听窗口大小变化
-          let that = this;
-          window.onresize = function() {
-            that.tableHeight = tableWrapRefHeight - that.$refs.table.$el.offsetTop - 38
-          }
+        this.talbeHeight = this.$refs.tableWrapRef.offsetHeight - 30
+        
       })      
     },
     
@@ -181,20 +176,26 @@ export default {
     width: 98%;
     height: calc(100% - 42px);
     margin: 0 auto; 
-  } 
-  // 表格底部背景透明
-  .el-table, .el-table__expanded-cell {
-    background-color: transparent;
-  }
+    .el-table {
+      width: 94%;
+      margin: 0 auto; 
+    }
 
-  .el-table th, .el-table tr {
-    background-color: transparent;
-  }
-  //去掉最下面的那一条线
-  .el-table::before {
-    height: 0px;
-  }
-  .el-table__row>td{
-    border: none;
-  }
+    // 表格底部背景透明
+    .el-table, .el-table__expanded-cell {
+      background-color: transparent;
+    }
+
+    .el-table th, .el-table tr {
+      background-color: transparent;
+    }
+    //去掉最下面的那一条线
+    .el-table::before {
+      height: 0px;
+    }
+    .el-table__row>td{
+      border: none;
+    }
+  } 
+
 </style>

@@ -44,6 +44,7 @@ export default {
 
     const pieChart = new G2.Chart({
       container: "waterAnalysis",
+      // autoFit: true,
       forceFit: true,
       height: pieChartHeight,
       padding: "auto"
@@ -51,10 +52,12 @@ export default {
     pieChart.source(this.pieChartData);
     pieChart.legend({
       position: "right-center",
-      offsetX: 0
+      offsetX: 0,
+      color: '#fff'
     });
     pieChart.coord("theta", {
-      radius: 0.75
+      radius: 0.9,
+      innerRadius: 0.4
     });
     pieChart
       .intervalStack()
@@ -65,12 +68,9 @@ export default {
         "#fbce1e",
         "#2b3b79",
         "#8a4be2",
-        "#1dc5c5"
+        "#1dc5c5",
+        "#6d99c5"
       ])
-      .style({
-        stroke: "white",
-        lineWidth: 1
-      })
       .label("sold", val => {
         if (val < 3) {
           return null;
@@ -78,7 +78,7 @@ export default {
         return {
           offset: -30,
           textStyle: {
-            fill: "white",
+            fill: "#c3dbff",
             fontSize: 14,
             shadowBlur: 2,
             shadowColor: "rgba(0, 0, 0, .45)"
@@ -118,6 +118,6 @@ export default {
   .analyChart_wrap {
     width: 98%;
     height: calc(100% - 60px);
-    margin: 6px auto;
+    margin: 0 auto;
   }  
 </style>

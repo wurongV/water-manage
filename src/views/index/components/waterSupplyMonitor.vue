@@ -1,11 +1,14 @@
 <template>
   <div class="panel_wrapper panel_wrapper_44">
     <dv-border-box-8 :color="['#227ead', 'rgb(124, 231, 253)']">
-      <div class="pad_6">
-        <header>用水量监测</header>
-        <div class="lineChart_wrap" ref="lineChartRef">
-          <div id="waterMonitor"></div>
+      <div class="pad_6 s_title">
+        <div class="title_l">
+          用水量监测
         </div>
+        <div class="title_r" />
+      </div>
+      <div class="lineChart_wrap" ref="lineChartRef">
+        <div id="waterMonitor"></div>
       </div>
     </dv-border-box-8>
   </div>  
@@ -73,10 +76,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .s_title {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    .title_l {
+      line-height: 30px;
+      flex: 1;
+      border-radius: 2px;
+      font-size: 18px;
+      text-align: center;
+      color: rgb(143, 185, 196); 
+      box-shadow: 0px 0px 21px rgb(152, 175, 182) inset;
+    }
+    .title_r {
+      padding-top: 8px;
+      flex: 3;
+      display: flex;
+      justify-content: space-around;
+    }
+
+  }
   .lineChart_wrap {
     width: 98%;
-    height: calc(100% - 42px);
-    // background-color: #fff;
-    margin: 6px auto;          
+    height: calc(100% - 60px);
+    margin: 0 auto;          
   }  
 </style>

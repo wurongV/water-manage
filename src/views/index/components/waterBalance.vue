@@ -8,6 +8,7 @@
         <div class="title_r">
           <el-switch
             class="switchStyle"
+            @change="switchChange"
             :width='70'
             v-model="switchVal"
             active-color="#13ce66"
@@ -18,40 +19,42 @@
         </div>
       </div>   
       <div class="water_balance_wrap">
-        <div class="baseMap" v-if="!switchVal">
-          <mingMap />
+        <el-date-picker
+          v-model="dateValue"
+          type="daterange"
+          align="left"
+          unlink-panels
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          size="small"
+          :picker-options="pickerOptions">
+        </el-date-picker>
+        <el-button 
+          style="margin-left:20px"
+          size="mini"
+          @click="queryDate"
+          type="primary">
+          <span>查询</span>
+        </el-button>        
+        <div class="baseMap" v-if="!switchVal" ref="baseMapRef">
+          <mingMap class="mingMap" />
         </div>
         <div class="baseList" v-else ref="baseListRef"> 
-          <el-date-picker
-            v-model="dateValue"
-            type="daterange"
-            align="left"
-            unlink-panels
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            size="small"
-            :picker-options="pickerOptions">
-          </el-date-picker>
-          <el-button 
-            style="margin-left:20px"
-            size="mini"
-            @click="queryDate"
-            type="primary">
-            <span>查询</span>
-          </el-button>
           <el-scrollbar>
             <tree-table
-              class="TreeTable"
-              ref="table"
-              treeType: true
-              :max-height="treeTableHeight"
+              class="treeTable"
+              ref="treeTableRef"
+              :is-fold="false"
               headerAlign="center"
-              :data="data"
+              :data="treeTableData"
               :columns="columns"
               :selection-type="false"
               :expand-type="false"
               :show-row-hover="false">
+              <template slot="operate" slot-scope="scope">
+                <el-button type="primary" size="mini">历史数据</el-button>
+              </template>
             </tree-table>
           </el-scrollbar>
         </div>
@@ -97,237 +100,175 @@ export default {
         }]
       }, 
       dateValue: '',
-      treeTableHeight: '500px',
-      treeTableData: [],
-data: [
-          {
-            name: 'Jack',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 10,
-            children: [
-              {
-                name: 'Ashley',
-                sex: 'female',
-                likes: ['football', 'basketball'],
-                score: 20,
-                children: [
-                  {
-                    name: 'Ashley',
-                    sex: 'female',
-                    likes: ['football', 'basketball'],
-                    score: 20,
-                  },
-                  {
-                    name: 'Taki',
-                    sex: 'male',
-                    likes: ['football', 'basketball'],
-                    score: 10,
-                    children: [
-                      {
-                        name: 'Ashley',
-                        sex: 'female',
-                        likes: ['football', 'basketball'],
-                        score: 20,
-                      },
-                      {
-                        name: 'Taki',
-                        sex: 'male',
-                        likes: ['football', 'basketball'],
-                        score: 10,
-                        children: [
-                          {
-                            name: 'Ashley',
-                            sex: 'female',
-                            likes: ['football', 'basketball'],
-                            score: 20,
-                          },
-                          {
-                            name: 'Taki',
-                            sex: 'male',
-                            likes: ['football', 'basketball'],
-                            score: 10,
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                name: 'Taki',
-                sex: 'male',
-                likes: ['football', 'basketball'],
-                score: 10,
-              },
-            ],
-          },
-          {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-            children: [
-              {
-                name: 'Ashley',
-                sex: 'female',
-                likes: ['football', 'basketball'],
-                score: 20,
-                children: [
-                  {
-                    name: 'Ashley',
-                    sex: 'female',
-                    likes: ['football', 'basketball'],
-                    score: 20,
-                  },
-                  {
-                    name: 'Taki',
-                    sex: 'male',
-                    likes: ['football', 'basketball'],
-                    score: 10,
-                  },
-                ],
-              },
-              {
-                name: 'Taki',
-                sex: 'male',
-                likes: ['football', 'basketball'],
-                score: 10,
-                children: [
-                  {
-                    name: 'Ashley',
-                    sex: 'female',
-                    likes: ['football', 'basketball'],
-                    score: 20,
-                  },
-                  {
-                    name: 'Taki',
-                    sex: 'male',
-                    likes: ['football', 'basketball'],
-                    score: 10,
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-          },
-                    {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-          },
-                    {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-          },
-                    {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-          },
-          
-                    {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-          },
-                    {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-          },          {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-          },
-
-          {
-            name: 'Tom',
-            sex: 'male',
-            likes: ['football', 'basketball'],
-            score: 20,
-            children: [
-              {
-                name: 'Ashley',
-                sex: 'female',
-                likes: ['football', 'basketball'],
-                score: 20,
-              },
-              {
-                name: 'Taki',
-                sex: 'male',
-                likes: ['football', 'basketball'],
-                score: 10,
-              },
-            ],
-          },
-        ],
-columns: [
-          {
-            label: 'name',
-            prop: 'name',
-            width: '400px',
-          },
-          {
-            label: 'sex',
-            prop: 'sex',
-            minWidth: '50px',
-          },
-          {
-            label: 'score',
-            prop: 'score',
-          },
-          {
-            label: 'likes',
-            prop: 'likes',
-            minWidth: '200px',
-            type: 'template',
-            template: 'likes',
-          },
-        ],
-      // columns: [
-      //   {label: '区域名称', prop: 'cat_name', minWidth: '160px'},
-      //   {label: '区域分级', minWidth: '80px', type: 'template', template: 'isOk'},
-      //   {label: '供水量(m³)', minWidth: '76px', type: 'template', template: 'order'},
-      //   {label: '用水量(m³)', width: '76px', type: 'template', template: 'opt'},
-      //   {label: '误差量(m³)', width: '76px ', type: 'template', template: 'opt'},
-      //   {label: '误差率(%)', width: '76px ', type: 'template', template: 'opt'},
-      //   {label: '水平衡结果', width: '100px ', type: 'template', template: 'opt'},
-      //   {label: '操作', width: '100px ', type: 'template', template: 'opt'},
-      // ],          
+      treeTableHeight: '200px',
+      treeTableData: [
+        {
+          area_name: '闽清水利局',
+          area_level: '一级',
+          water_demind: '3.2',
+          water_user: '3.3',
+          err_amont: '-0.1',
+          err_rate: '-3.1',
+          res_balance: '一二级平衡',
+          children: [
+            {
+              area_name: '开水间支管',
+              area_level: '二级',
+              water_demind: '3.2',
+              water_user: '3.3',
+              err_amont: '-0.1',
+              err_rate: '-3.1',
+              res_balance: '二三级平衡',
+              children: [
+                {
+                  area_name: '二楼开水间',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                },
+                {
+                  area_name: '四楼开水间',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                },  
+                {
+                  area_name: '六楼开水间',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                },                    
+                {
+                  area_name: '五楼开水间',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                }                  
+              ]
+            },
+            {
+              area_name: '公共卫生间支管',
+              area_level: '二级',
+              water_demind: '3.2',
+              water_user: '3.3',
+              err_amont: '-0.1',
+              err_rate: '-3.1',
+              res_balance: '二三级平衡', 
+              children: [
+                {
+                  area_name: '二楼公共卫生间',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                },
+                {
+                  area_name: '六楼公共卫生间',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                },
+                {
+                  area_name: '四楼公共卫生间',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                },
+                {
+                  area_name: '三楼公共卫生间',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                }
+              ]             
+            },
+            {
+              area_name: '大厅支管',
+              area_level: '二级',
+              water_demind: '3.2',
+              water_user: '3.3',
+              err_amont: '-0.1',
+              err_rate: '-3.1',
+              res_balance: '二三级平衡',  
+              children: [
+                {
+                  area_name: '大厅水表',
+                  area_level: '三级级',
+                  water_demind: '3.2',
+                  water_user: '3.3',
+                  err_amont: '-0.1',
+                  err_rate: '-3.1',
+                  res_balance: '平衡',
+                },
+              ]             
+            }
+          ],
+        },
+      ],
+      columns: [
+        {label: '区域名称', prop: 'area_name', minWidth: '160px'},
+        {label: '区域分级', prop: 'area_level', minWidth: '80px'},
+        {label: '供水量(m³)', prop: 'water_demind', minWidth: '50px'},
+        {label: '用水量(m³)', prop: 'water_user', minWidth: '50px'},
+        {label: '误差量(m³)', prop: 'err_amont', minWidth: '50px '},
+        {label: '误差率(%)', prop: 'err_rate', minWidth: '50px '},
+        {label: '水平衡结果',prop: 'res_balance', minWidth: '100px '},
+        {label: '操作', minWidth: '100px ', type: 'template', template: 'operate'},
+      ],          
     }
   },
   mounted () {
 
-   this.tableAuto()
+   this.setTreeTable()
     
   },
   methods: {
+    switchChange() {
+      this.setTreeTable()
+    },
     queryDate() {
       console.log(this.dateValue);
     },
-    tableAuto() {
-      this.$nextTick(function () {
-        let baseListRefHeight = this.$refs.baseListRef.offsetHeight
-          this.treeTableHeight = baseListRefHeight - this.$refs.table.$el.offsetTop - 38;
+    setTreeTable() {
+      if (this.switchVal) {
+        this.$nextTick(function () {
+          let baseListRefHeight = this.$refs.baseListRef.offsetHeight - 64 - 8
+          let treeTable = document.querySelector('.zk-table__body-wrapper')
+          treeTable.style.height = baseListRefHeight + 'px'
+
+          //根据后端提供报警标志设置表格变红报警 
+          let rowData = document.querySelectorAll('.zk-table__body-row')[3]
+          rowData.style.color = '	#DC193A'
+
           // 监听窗口大小变化
-          let that = this;
           window.onresize = function() {
-            that.treeTableHeight = baseListRefHeight - that.$refs.table.$el.offsetTop - 38
+            treeTable.style.height = baseListRefHeight + 'px'
           }
-      })      
+        }) 
+      }
     },  
 
   }
@@ -354,62 +295,83 @@ columns: [
       display: flex;
       padding-top: 12px;
       justify-content: flex-end;
+
+      // 3d列表选择
+      /deep/.switchStyle {
+        .el-switch__label {
+          position: absolute;
+          // 兼容ie10 11
+          top: 0px;
+          display: none;
+          color: #f0f0f0;
+        }
+
+        .el-switch__label--right {
+          z-index: 9;
+          right: 20px;
+          font-weight: 700;
+        }
+
+        .el-switch__label--left {
+          z-index: 9;
+          left: 32px;
+          font-weight: 700;
+        }
+
+        .el-switch__label.is-active {
+          display: block;
+        }
+
+        .el-switch .el-switch__core,
+        .el-switch .el-switch__label {
+          width: 50px !important;
+        }
+      }
+
     }    
   }
   .water_balance_wrap {
     width: 98%;
-    height: calc(100% - 56px);
-    margin: 0 auto;     
-    .baseMap,
+    height: calc(100% - 88px);
+    margin: 0 auto;   
     .baseList {
       width: 100%;
       height: 100%;
+
+      .treeTable {
+        width: 100%;
+        margin: 8px auto;
+        border: none;
+
+        /deep/.zk-table__header-row {
+          font-size: 14px;
+          background-color: #1C4DA6;
+          border-bottom: none;
+          color: #dedede;
+        }
+        /deep/ .zk-table__body {
+          border-collapse: separate;
+        } 
+        /deep/ .zk-table__body-wrapper {
+          width: 100%;
+          background-color: #133049;
+          color: #c3dbff;   
+        }
+
+      }  
+
     }
-    .baseList {
-      // background-color: pink;
-    }
-    .TreeTable {
-      width: 98%;
+    .baseMap {
+      width: 100%;
+      height: 100%;
       overflow: auto;
-      margin: 0 auto;
-      margin-top: 8px;
-    }
-  }
-
-
-  // 3d列表选择
-  /deep/.switchStyle {
-    .el-switch__label {
-      position: absolute;
-      // 兼容ie10 11
-      top: 0px;
-      display: none;
-      color: #f0f0f0;
+      .mingMap {
+        width: 100%;
+        margin: 8px auto;        
+      }
     }
 
-    .el-switch__label--right {
-      z-index: 9;
-      right: 20px;
-      font-weight: 700;
-    }
-
-    .el-switch__label--left {
-      z-index: 9;
-      left: 32px;
-      font-weight: 700;
-    }
-
-    .el-switch__label.is-active {
-      display: block;
-    }
-
-    .el-switch .el-switch__core,
-    .el-switch .el-switch__label {
-      width: 50px !important;
-    }
-  }
-
-
+    // 日期选择器
     /deep/.el-input__inner {
       background: 000;
       border: 1px solid #227ead;
@@ -426,25 +388,5 @@ columns: [
     /deep/.el-picker-panel__sidebar {
       background-color: #133049;
     }
-
-
-  // tree-table
-  /deep/ .zk-table {
-    border: none;
   }
-
-  /deep/.zk-table__header-row {
-    font-size: 14px;
-    background-color: #1C4DA6;
-    color: #c3dbff;
-    border-bottom: none;
-  }
-
-  /deep/ .zk-table__body-wrapper{
-    background-color: #133049;
-    color: #c3dbff;      
-  }
-
-
-
 </style>

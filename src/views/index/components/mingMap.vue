@@ -1,16 +1,15 @@
 <template>
   <div class="text-center">
-    <div class="checkbox">
+    <!-- <div class="checkbox">
       <label>
         <input type="checkbox" v-model="expandAll" @change="expandChange" /> 显示所有项
       </label>
-    </div>
+    </div> -->
     <vue2-org-tree
       name="test"
       :data="treeData"
       :horizontal="horizontal"
       :collapsable="collapsable"
-      :label-class-name="labelClassName"
       :render-content="renderContent"
       @on-expand="onExpand"
       @on-node-click="onNodeClick"/>
@@ -39,7 +38,7 @@ export default {
               },
               {
                 id: 13,
-                label: "刘楼开水间",
+                label: "六楼开水间",
               },
               {
                 id: 14,
@@ -138,7 +137,6 @@ export default {
       horizontal: true,
       collapsable: true,
       expandAll: false,
-      labelClassName: "bg-white"
     };
   },
   mounted () {
@@ -177,7 +175,7 @@ export default {
       });
     },
     expandChange() {
-      this.toggleExpand(this.treeData, this.expandAll);
+      this.toggleExpand(this.treeData, true);
     },
     toggleExpand(data, val) {
       var _this = this;
@@ -217,9 +215,6 @@ export default {
     }
     .org-tree-node-label {
       white-space: nowrap;
-    }
-    .bg-white {
-      background-color: white;
     }
   }
 
