@@ -1,23 +1,31 @@
 <template>
   <el-container class="home">
     <el-header>
-      <div class="header_left">节水监测云平台</div>
+      <div class="header_left" @click="goFullScreen()">节水监测云平台</div>
       <ul class="header_right">
         <li @click="goFullScreen">
           <i slot="suffix" class="el-icon-full-screen"></i>  
-          <span>全屏</span>
+          <span>首页</span>
         </li>
         <li>
           <i slot="suffix" class="el-icon-bell"></i>          
           <span>提示</span>
         </li>
-        <li>
-          <span>用户名</span>
-        </li>
-        <li @click="logout">
-          <span>退出</span>
-        </li>
+        <el-dropdown class="username"  @command="handleCommand">
+          <span class="el-dropdown-link">
+            {{myName}}
+            <i class="el-icon-caret-bottom"></i>
+          </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="modifyPwd">修改密码</el-dropdown-item>
+              <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>  
+        <modifyPwdDialog 
+          :modifyPwdFlg="modifyPwdFlg"
+          @modifyPwdFialog-flg="getModifyPwd"/>         
       </ul>
+      
       <ul class="date_wrap">
         <li class="fs_10">
           <div>{{weekDate}}</div>
@@ -29,17 +37,14 @@
     <el-container>
       <el-aside width="218px">
         <el-menu
-          background-color="#f1f1f1"
           default-active="activePath"
-          text-color="#697b86"
-          active-text-color="#409EFF"
+          text-color="#727275"
           unique-opened
           router>
           <el-submenu 
             :index="item.id"
             v-for="item in meunlist"
-            :key="item.id"
-          >
+            :key="item.id">
             <template slot="title">
               <i :class="iconObj[item.id]" style="color:sykblue"></i>
               <span>{{item.authName}}</span>
@@ -66,7 +71,11 @@
 </template>
 
 <script>
+import modifyPwdDialog from '../components/passwordModifyDialog'
 export default {
+  components: {
+    modifyPwdDialog
+  },
   data () {
     return {
       iconObj: {
@@ -89,6 +98,8 @@ export default {
       weekDate: '',
       yearDate: '',
       timeDate: '',
+      myName: '闽清水利局',
+      modifyPwdFlg: false,
     }
   },
   created () {
@@ -131,8 +142,18 @@ export default {
     saveChildPath(activePath) {
       window.sessionStorage.setItem('activePath',activePath)
       this.activePath = activePath
-    },    
-
+    }, 
+    handleCommand(command) {
+      if (command == 'loginout') {
+        localStorage.removeItem('myname')
+        this.$router.push('/login')
+      } else {
+        this.modifyPwdFlg = true
+      }
+    },       
+    getModifyPwd(val) {
+      this.modifyPwdFlg = val
+    },
   }  
 }
 </script>
@@ -148,6 +169,7 @@ export default {
       height: 60px;
       .header_left {
         float: left;
+        cursor: pointer;
         width: 260px;
         line-height: 60px;
         margin-left: 30px;
@@ -185,6 +207,18 @@ export default {
           background-color: #337ab7;
           border-radius: 4px;
         }
+        .username {
+          float: left;
+          padding-top: 20px;
+          .el-dropdown {
+            display: inline-block;
+          }
+          .el-dropdown-link {
+            color: #dedede;
+            cursor: pointer;
+          }
+
+        }        
       }
       .date_wrap {
         opacity: 0.5;
@@ -211,19 +245,11 @@ export default {
     }
     
     .el-aside {
-      color: #333;
-      background-color: #f1f1f1;
-      border-right: 2px #dde5e9 solid;
+      box-shadow: 4px 4px 10px rgba(69,65,78,.06);
       .el-menu {
         border-right: 0;
-        // background-color: #f1f1f1;
-        // /deep/.el-menu--inline {
-          
-        // }
       }
     }
-    
-
   }
 
 

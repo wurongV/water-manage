@@ -74,12 +74,11 @@ export default {
       justify-content: center;
       align-items: center;   
       .outline_border {
-        width: 50%;
+        width: 66%;
         height: 50%;
         border: 1px solid #2c58a6;
-        border-radius: 19px;
+        border-radius: 6px;
         box-shadow: rgba(38, 97, 129, 0.533) 0px 0px 30px inset;
-        border-color: rgb(50, 80, 94);          
         display: flex;
         flex-direction: column;
         justify-content: center;

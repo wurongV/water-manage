@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="panel_wrapper panel_wrapper_33">
     <dv-border-box-12 :color="['#227ead', 'rgb(124, 231, 253)']">
       <div class="pad_6 s_title">
@@ -16,10 +16,10 @@
         </div>
         <div class="saving_right">
           <div class="right_up">
-            <p>环比节水: 0.278</p>
+            <p>环比节水:0.278</p>
           </div>
           <div class="right_down">
-            <p>同比节水: 1.980</p>
+            <p>同比节水:1.980</p>
           </div>
         </div>
       </div>
@@ -67,13 +67,13 @@ export default {
     display: flex; 
     .saving_left {
       flex: 1;
+      // background-color: aquamarine;
       .circle {
         width: 60%;
         height: 60%;
-        border: 1px solid #2c58a6;
-        border-radius: 19px;
-        box-shadow: rgba(38, 97, 129, 0.533) 0px 0px 30px inset;
-        border-color: rgb(50, 80, 94);          
+        background: url('../../../assets/image/index/环形.png') no-repeat;
+        background-size: 100% 100%;
+        border-radius: 19px;        
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -83,7 +83,8 @@ export default {
         left: 50%;
         transform: translate(-50%, -50%);
         >p {
-          padding: 6px 0;
+          padding: 12px 0;
+          color: #c3dbff; 
         }
       }
     }
@@ -98,17 +99,16 @@ export default {
           width: 60%;
           height: 60%;
           border: 1px solid #2c58a6;
-          border-radius: 19px;
+          border-radius: 6px;
           box-shadow: rgba(38, 97, 129, 0.533) 0px 0px 30px inset;
-          border-color: rgb(50, 80, 94);          
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           position: absolute;
           top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+          left: 0;
+          transform: translateY(-50%);
         }
       }
     }

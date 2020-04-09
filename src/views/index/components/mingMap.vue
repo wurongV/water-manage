@@ -6,6 +6,7 @@
       </label>
     </div> -->
     <vue2-org-tree
+      class="treeMap"
       name="test"
       :data="treeData"
       :horizontal="horizontal"
@@ -201,6 +202,10 @@ export default {
   .text-center {
     width: 100%;
     height: 100%;
+    background-color: #133049;
+    .treeMap {
+      margin: 0 auto;
+    }
     /deep/.org-tree-container {
       background-color: transparent;
       -webkit-box-shadow: 0 0;

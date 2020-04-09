@@ -43,9 +43,11 @@ import {
   DropdownMenu, 
   DropdownItem,
   Scrollbar,
-  datePicker
+  datePicker,
+  Radio
 } from 'element-ui'
 
+Vue.use(Radio)
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(FormItem)
