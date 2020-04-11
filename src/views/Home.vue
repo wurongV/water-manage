@@ -27,11 +27,11 @@
       </ul>
       
       <ul class="date_wrap">
-        <li class="fs_10">
+        <li class="fs_12">
           <div>{{weekDate}}</div>
           <div>{{yearDate}}</div>
         </li>
-        <li class="fs_30">{{timeDate}}</li>
+        <li class="fs_34">{{timeDate}}</li>
       </ul>       
     </el-header>
     <el-container>
@@ -221,9 +221,10 @@ export default {
         }        
       }
       .date_wrap {
-        opacity: 0.5;
+        font-family: "clock";
+        opacity: 0.7;
         float: right;
-        width: 180px;
+        width: 260px;
         height: 100%;
         >li {
           float: left;
@@ -245,7 +246,9 @@ export default {
     }
     
     .el-aside {
-      box-shadow: 4px 4px 10px rgba(69,65,78,.06);
+      box-shadow: 4px 4px 10px rgba(69,65,78,.16);
+      //  box-shadow: 0 0 0 1px hsla(0,0%,100%,.3) inset,   
+      //              0 .5em 1em rgba(0, 0, 0, 0.6);  
       .el-menu {
         border-right: 0;
       }

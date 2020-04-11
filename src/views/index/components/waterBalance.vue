@@ -42,10 +42,7 @@
           type="warning">
           <span>图表</span>
         </el-button>                      
-        <!-- <div class="baseMap" ref="baseMapRef">
-          <mingMap class="mingMap" />
-        </div> -->
-        <div class="baseList" ref="baseListRef"> 
+        <div class="baseList beauty-Scroll" ref="baseListRef"> 
           <el-scrollbar>
             <tree-table
               class="treeTable"
@@ -67,11 +64,7 @@
 
 <script>
 import util from '@/mixins/util.js'
-import mingMap from './mingMap.vue'
 export default {
-  components: {
-    mingMap
-  },
   data () {
     return {
       pickerOptions: {
@@ -269,7 +262,7 @@ export default {
   },
   mounted () {
 
-   this.setTreeTable()
+    this.setTreeTable()
     
   },
   methods: {
@@ -284,7 +277,7 @@ export default {
 
         //根据后端提供报警标志设置表格变红报警 
         let rowData = document.querySelectorAll('.zk-table__body-row')[3]
-        rowData.style.color = '	#DC193A'
+        rowData.style.color = '#F56C6C'
 
         // 监听窗口大小变化
         window.onresize = function() {
@@ -292,6 +285,7 @@ export default {
         }
       }) 
     },  
+    // 导出excel格式
     exportExcel() {
       // 树结构转一维数组
       let arr = util.toArr(this.treeTableData)
@@ -370,32 +364,23 @@ export default {
       }  
 
     }
-    .baseMap {
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      .mingMap {
-        width: 100%;
-        margin: 8px auto;        
-      }
-    }
 
-    // 日期选择器
-    /deep/.el-input__inner {
-      background: 000;
-      border: 1px solid #227ead;
-      border-radius: 6px;
-      color: #adadad;
-    }    
-    /deep/.el-range-input {
-      background-color: #133049;
-      color: #dedede;
-    }
-    /deep/.el-range-separator {
-      color: #dedede;
-    }
-    /deep/.el-picker-panel__sidebar {
-      background-color: #133049;
-    }
+  // 日期选择器
+  /deep/.el-input__inner {
+    background: 000;
+    border: 1px solid #227ead;
+    border-radius: 6px;
+    color: #adadad;
+  }    
+  /deep/.el-range-input {
+    background-color: #133049;
+    color: #dedede;
+  }
+  /deep/.el-range-separator {
+    color: #dedede;
+  }
+  /deep/.el-picker-panel__sidebar {
+    background-color: #133049;
+  }
   }
 </style>

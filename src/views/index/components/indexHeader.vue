@@ -95,10 +95,15 @@ export default {
       top: 20%;
       right: 4%;    
       >li {
+        // color: #c3dbff;
+        letter-spacing: 1px;
         cursor: pointer;
         float: right;
         &:last-child {
           padding-right: 28px;
+        }
+        &:hover {
+          color: #409EFF;
         }
       }
     }

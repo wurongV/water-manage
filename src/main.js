@@ -5,6 +5,7 @@ import '../src/assets/less/global.less'
 import './plugins/element.js'
 import dataV from '@jiaminghi/data-view'
 import G2 from '@antv/g2'
+import '../src/assets/less/clock.less'
 import TreeTable from 'vue-table-with-tree-grid'
 import Vue2OrgTree from 'vue2-org-tree';
 
