@@ -9,6 +9,7 @@ const Area = () => import('../views/area/areaManage.vue')
 const Water = () => import('../views/water/waterManage.vue')
 const Index = () => import('../views/index/Index.vue')
 const Map = () => import('../views/index/components/mingMap.vue')
+const Regime =() => import('@/views/regime/regimeEidt.vue')
 
 Vue.use(VueRouter)
 
@@ -21,7 +22,8 @@ const routes = [
       {path: '/welcome', component: Welcome },
       {path: '/user', component: User},
       {path: '/area', component: Area},
-      {path: '/water', component: Water}
+      {path: '/water', component: Water},
+      {path: '/regime', component: Regime}
     ]
   },
   {path: '/index', component: Index},

@@ -41,6 +41,8 @@ export default {
   mounted () {
     // 饼状图
     const pieChartHeight = this.$refs.analyChartRef.offsetHeight;
+    console.log(this.$refs.analyChartRef);
+    
 
     const pieChart = new G2.Chart({
       container: "waterAnalysis",

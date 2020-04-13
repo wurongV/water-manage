@@ -81,7 +81,8 @@ export default {
       iconObj: {
         '0': 'el-icon-user',
         '1': 'el-icon-map-location',
-        '2': 'el-icon-tickets'
+        '2': 'el-icon-tickets',
+        '3': 'el-icon-document'
       },
       meunlist: [ 
         {id: '0', authName: "用户管理", path: "user", 
@@ -93,6 +94,9 @@ export default {
         {id: '1', authName: "区域管理", path: "area",
           child:[{id: '11', authName: "区域列表", path: "area"}]
         },
+        {id: '3', authName: "制度编辑", path: "area",
+          child:[{id: '13', authName: "制度编辑", path: "regime"}]
+        },        
       ],
       activePath: '',
       weekDate: '',

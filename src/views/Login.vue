@@ -34,18 +34,18 @@
         </el-form-item>
         <el-form-item class="btns">
           <el-button 
-            type="info" 
-            size="small" 
-            @click="resetLoginForm" 
-            style="margin-left:50px;">
-              重置
-          </el-button>          
-          <el-button 
             type="primary" 
             size="small" 
-            @click="login">
+            @click="login"
+            style="margin-left:50px;">
               登录
-          </el-button>
+          </el-button>          
+          <el-button 
+            type="info" 
+            size="small" 
+            @click="resetLoginForm" >
+              重置
+          </el-button>    
         </el-form-item>
       </el-form>
     </div>

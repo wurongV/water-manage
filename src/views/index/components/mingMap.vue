@@ -223,6 +223,10 @@ export default {
       this.$router.push('/index')
     },
     renderContent(h, data) {
+      console.log(h);
+      console.log(data);
+      
+      
       return data.label;
     },
     onExpand(e, data) {
